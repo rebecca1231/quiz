@@ -40,9 +40,7 @@ const Data = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchTerm2]);
 
-  const renderMovies2 = () => {
-    console.log(movies2)
-  }
+
 
   console.log(movies2)
 
