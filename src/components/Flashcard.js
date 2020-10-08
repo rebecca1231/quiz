@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react"
 import styled from "styled-components"
-import useHasMounted from './useHasMounted'
 
 import { CountContext } from "../context/countContext"
 
@@ -52,7 +51,7 @@ const Flashcard = ({
         respondToIncorrect({jpn, eng}),
         resetCount(),
         setTimeout(() => {
-          return setCorrect(false), setQuestionNumber(questionNumber + 1)
+          return (setCorrect(false), setQuestionNumber(questionNumber + 1))
         }, 1000)
       )
     }

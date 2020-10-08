@@ -3,7 +3,6 @@ import {useHistory} from 'react-router-dom'
 import Head from "./components/head";
 import styled from "styled-components";
 import Flashcard from "./components/Flashcard";
-import useHasMounted from "./components/useHasMounted";
 
 const Choices = styled.div`
   display: flex;
