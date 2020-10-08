@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {CountContextProvider} from './context/countContext'
+import {DataContextProvider} from './context/dataContext'
 
 ReactDOM.render(
   <React.StrictMode>
     <CountContextProvider>
+      <DataContextProvider>
     <App />
+    </DataContextProvider>
     </CountContextProvider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react"
-import styled from "styled-components"
+import React, { useState, useContext } from "react";
+import styled from "styled-components";
 
-import { CountContext } from "../context/countContext"
+import { CountContext } from "../context/countContext";
 
 const Card = styled.div`
   display: flex;
@@ -12,11 +12,11 @@ const Card = styled.div`
   font-size: 1.5rem;
   border: 3px solid #eee;
   width: 100%;
-`
+`;
 
 const Flashcard = ({
-  eng,
-  jpn,
+  choice1,
+  choice2,
   color,
   answer,
   setScore,
@@ -24,75 +24,72 @@ const Flashcard = ({
   setQuestionNumber,
   questionNumber,
   respondToCorrect,
-  respondToIncorrect
+  respondToIncorrect,
 }) => {
-  const [showAnswer, setShowAnswer] = useState(false)
-  const [wrongAnswer, setWrongAnswer] = useState(false)
-  const [correct, setCorrect] = useState(false)
-  const { count, updateCount, resetCount } = useContext(CountContext)
-
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [wrongAnswer, setWrongAnswer] = useState(false);
+  const [correct, setCorrect] = useState(false);
+  const { count, updateCount, resetCount } = useContext(CountContext);
   const handleCorrect = () => {
     if (count === 0) {
       return (
         setCorrect(true),
-        respondToCorrect({jpn, eng}),
+        respondToCorrect({ choice2, choice1 }),
         setTimeout(() => {
           return (
             setScore(score + 1),
             setCorrect(false),
             setQuestionNumber(questionNumber + 1),
             resetCount()
-          )
+          );
         }, 1000)
-      )
+      );
     } else {
       return (
         setCorrect(true),
-        respondToIncorrect({jpn, eng}),
+        respondToIncorrect({ choice2, choice1 }),
         resetCount(),
         setTimeout(() => {
-          return (setCorrect(false), setQuestionNumber(questionNumber + 1))
+          return (setCorrect(false), setQuestionNumber(questionNumber + 1));
         }, 1000)
-      )
+      );
     }
-  }
+  };
 
   const handleIncorrect = () => {
     return (
       updateCount(count),
       setWrongAnswer(true),
       setTimeout(() => {
-        setWrongAnswer(false)
+        setWrongAnswer(false);
       }, 500)
-    )
-  }
+    );
+  };
   return (
-
     <Card
       style={{ backgroundColor: `${color}` }}
       onClick={() => {
         return (
           setShowAnswer(true),
           setTimeout(() => {
-            setShowAnswer(false)
+            setShowAnswer(false);
           }, 1000),
-          answer.jpn === jpn ? handleCorrect() : handleIncorrect()
-        )
+          answer === choice2 ? handleCorrect() : handleIncorrect()
+        );
       }}
     >
       {showAnswer && correct ? (
         <h1>GOOD!</h1>
       ) : showAnswer && wrongAnswer ? (
         <>
-          {jpn}
+          {choice2}
           <h1>X</h1>
         </>
       ) : (
-        eng
+        choice2
       )}
     </Card>
+  );
+};
 
-  )
-}
-
-export default Flashcard
+export default Flashcard;

@@ -2,10 +2,12 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import styled from "styled-components";
 
+import Footer from "./components/footer";
 import About from "./About";
 import Landing from "./Landing";
 import Review from "./Review";
 import Scores from "./Scores";
+import Data from "./Data";
 
 const LayoutBase = styled.div`
   box-sizing: border-box;
@@ -31,6 +33,12 @@ const App = () => {
           <div className="item">
             <Link to="/review">Review</Link>
           </div>
+          <div className="item">
+            <Link to="/data">Data</Link>
+          </div>{" "}
+          <div className="item">
+            <Link to="/score">Score</Link>
+          </div>
         </div>
         <Switch>
           <LayoutBase>
@@ -38,8 +46,10 @@ const App = () => {
             <Route path="/review" component={Review} />
             <Route exact path="/" component={Landing} />
             <Route path="/scores" component={Scores} />
+            <Route path="/data" component={Data} />
           </LayoutBase>
         </Switch>
+        <Footer />
       </div>
     </Router>
   );
