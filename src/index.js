@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import {CountContextProvider} from './context/countContext'
 
 ReactDOM.render(
   <React.StrictMode>
+    <CountContextProvider>
     <App />
+    </CountContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
