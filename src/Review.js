@@ -12,11 +12,12 @@ const Choices = styled.div`
   margin-bottom: 2rem;
 `;
 
+const correctAnswers = [];
+
 const Review = () => {
   const { movies, choice1, choice2 } = useContext(DataContext);
   const currentSet = [...movies];
   const dataLength = movies.length; //chane if info changes
-  const correctAnswers = [];
   const history = useHistory();
 
   const [score, setScore] = useState(0);
@@ -44,13 +45,11 @@ const Review = () => {
   };
 
   const respondToCorrect = (item) => {
-    if (correctAnswers.some((obj) => obj[choice1] === item[choice1])) {
+    if (correctAnswers.includes(item)) {
       return;
-    } else {
-      correctAnswers.push(item);
-      if (correctAnswers.length === dataLength) setFinished(true);
-      return correctAnswers;
-    }
+    } else correctAnswers.push(item);
+    if (correctAnswers.length === dataLength) setFinished(true);
+    return correctAnswers;
   };
 
   const respondToIncorrect = (item) => {
@@ -63,7 +62,6 @@ const Review = () => {
     answer = items[getRandomNumber(3)];
     const colors = ["#cffffe", "#f9f7d9", "#a3d2ca", "#ffe0f7"];
     return items.map((item) => {
-      console.log("renderChoices ", item[choice1]);
       return (
         <Flashcard
           choice1={item[choice1]}
@@ -84,9 +82,10 @@ const Review = () => {
   return (
     <div>
       <Head title="Quiz" />
-      {movies.length < 1 ? (<>
-        <h1>Sorry, you have no quiz data</h1>
-        <p>Please head to data to select your quiz details</p>
+      {movies.length < 1 ? (
+        <>
+          <h1>Sorry, you have no quiz data</h1>
+          <p>Please head to data to select your quiz details</p>
         </>
       ) : (
         <>
@@ -126,7 +125,6 @@ const Review = () => {
               </div>
             </>
           )}
-          )
         </>
       )}
     </div>
