@@ -105,7 +105,7 @@ const Data = () => {
     return setSearchTerm(value);
   };
 
-  const debounceOnChange = useCallback(debounce(handleChange, 1000), []);
+  const debounceOnChange = useCallback(debounce(handleChange, 500), []);
 
   return (
     <div>
