@@ -1,7 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-import { CountContext } from "../context/countContext";
 
 const Card = styled.div`
   display: flex;
@@ -20,28 +19,28 @@ const Flashcard = ({
   choice2,
   color,
   answer,
-  setScore,
+  updateScore,
   score,
-  setQuestionNumber,
-  questionNumber,
+  updateCount,
+  count,
   respondToCorrect,
   respondToIncorrect,
 }) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [wrongAnswer, setWrongAnswer] = useState(false);
   const [correct, setCorrect] = useState(false);
-  const { count, updateCount, resetCount } = useContext(CountContext);
+  const [counter, setCounter] = useState(0)
   const handleCorrect = () => {
-    if (count === 0) {
+    if (counter === 0) {
       return (
         setCorrect(true),
         respondToCorrect(choice1),
         setTimeout(() => {
           return (
-            setScore(score + 1),
+            updateScore(score),
             setCorrect(false),
-            setQuestionNumber(questionNumber + 1),
-            resetCount()
+            updateCount(count),
+            setCounter(0)
           );
         }, 1000)
       );
@@ -49,9 +48,9 @@ const Flashcard = ({
       return (
         setCorrect(true),
         respondToIncorrect({ choice2, choice1 }),
-        resetCount(),
+        setCounter(0),
         setTimeout(() => {
-          return (setCorrect(false), setQuestionNumber(questionNumber + 1));
+          return (setCorrect(false), updateCount(count));
         }, 1000)
       );
     }
@@ -59,7 +58,7 @@ const Flashcard = ({
 
   const handleIncorrect = () => {
     return (
-      updateCount(count),
+      setCounter(1),
       setWrongAnswer(true),
       setTimeout(() => {
         setWrongAnswer(false);

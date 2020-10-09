@@ -4,6 +4,7 @@ import Head from "./components/head";
 import styled from "styled-components";
 import Flashcard from "./components/Flashcard";
 import { DataContext } from "./context/dataContext";
+import {CountContext} from './context/countContext'
 import { getRandomNumber } from "./utils/getRandomNumber";
 const Choices = styled.div`
   display: flex;
@@ -16,12 +17,12 @@ const correctAnswers = [];
 
 const Review = () => {
   const { movies, choice1, choice2 } = useContext(DataContext);
+  const {count, score, updateCount, updateScore} = useContext(CountContext)
   const currentSet = [...movies];
-  const dataLength = movies.length; //chane if info changes
+  const dataLength = movies.length; 
   const history = useHistory();
 
-  const [score, setScore] = useState(0);
-  const [questionNumber, setQuestionNumber] = useState(1);
+  //const [score, setScore] = useState(0);
   const [, setUpdate] = useState();
   const forceUpdate = useCallback(() => setUpdate({}), []);
   const [finished, setFinished] = useState(false);
@@ -68,10 +69,10 @@ const Review = () => {
           choice2={item[choice2]}
           color={colors[item.index]}
           answer={answer[choice2]}
-          setScore={setScore}
+          updateScore={updateScore}
           score={score}
-          setQuestionNumber={setQuestionNumber}
-          questionNumber={questionNumber}
+          updateCount={updateCount}
+          count={count}
           respondToCorrect={respondToCorrect}
           respondToIncorrect={respondToIncorrect}
         />
@@ -84,8 +85,10 @@ const Review = () => {
       <Head title="Quiz" />
       {movies.length < 1 ? (
         <>
-          <h1>Sorry, you have no quiz data</h1>
-          <p>Please head to data to select your quiz details</p>
+          <h1>Something's Missing</h1>
+            <p>You have no quiz data</p>
+          <p>Please select your quiz details.</p>
+          <div onClick={()=> history.push('/data')} className="ui basic teal button">Get Your Data</div>
         </>
       ) : (
         <>
@@ -95,7 +98,7 @@ const Review = () => {
               <h3>Well Done!</h3>{" "}
               <div className="item">
                 <div
-                  onClick={() => history.push("/scores")}
+                  onClick={() => history.push("/score")}
                   className="ui basic big button blue"
                 >
                   Show my scores!
@@ -106,7 +109,7 @@ const Review = () => {
             <>
               <h1>Review </h1>
               <h4>Your score: {score}</h4>
-              <h3>Question: {questionNumber}</h3>
+              <h3>Question: {count}</h3>
               <Choices>{renderChoices()}</Choices>
               <div>
                 <h3> Please find the correct answer: </h3>

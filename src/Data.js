@@ -9,10 +9,9 @@ const Data = () => {
   const history = useHistory();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTerm2, setSearchTerm2] = useState("");
-  const [movies2, setMovies2] = useState([])
+  const [movieDetails, setmovieDetails] = useState([]);
+  const { movies, updateMovies } = useContext(DataContext);
 
-  const { movies, updateMovies /*choice1, choice2*/ } = useContext(DataContext);
-  console.log(movies);
   useEffect(() => {
     const fetchData = async (searchTerm) => {
       const response = await axios.get("https://www.omdbapi.com/", {
@@ -24,7 +23,6 @@ const Data = () => {
       if (response.data.Error) return [];
       updateMovies(response.data.Search);
     };
-
     fetchData(searchTerm);
 
     const onMovieSelect = async (searchTerm2) => {
@@ -33,23 +31,22 @@ const Data = () => {
           apikey: APIKEY,
           i: searchTerm2,
         },
-      }); if (response.data.Error) return [];
-      setMovies2(response.data);
+      });
+      if (response.data.Error) return [];
+      setmovieDetails(response.data);
     };
     onMovieSelect(searchTerm2);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, searchTerm2]);
-
-
-
-  console.log(movies2)
 
   const renderList = (selector = "Year") => {
     if (movies.length < 1) return;
     return movies.map((movie) => {
+      const id = movie.imdbID;
       return (
         <div
-          key={movie.imdbID}
+          key={id}
           style={{ display: "flex", justifyContent: "", textAlign: "left" }}
         >
           <div style={{ padding: "3px" }}>
@@ -62,48 +59,82 @@ const Data = () => {
               <strong>Year:</strong> {movie[selector]}
             </p>
           </div>
+          <div style={{ padding: "3px" }}>
+            <div style={{ padding: "5px" }}>
+              <div
+                className="ui tiny button basic"
+                onClick={() => setSearchTerm2(id)}
+                style={{ maxWidth: "40vw" }}
+              >
+                More about this movie
+              </div>
+            </div>
+          </div>
         </div>
       );
     });
   };
 
+  const renderDetails = () => {
+    if (movieDetails.length < 1) return;
+    return (
+      <div style={{ display: "flex", padding: "10px" }}>
+        <div style={{ padding: "10px" }}>
+          <img src={movieDetails.Poster} alt={movieDetails.Title} />
+          <p> Title: {movieDetails.Title}</p>
+          <p> Rating: {movieDetails.Rated} </p>
+          <p> Actors: {movieDetails.Actors} </p>
+          <p> Awards: {movieDetails.Awards} </p>
+          <p> Director: {movieDetails.Director} </p>
+          <p> Plot: {movieDetails.Plot} </p>
+        </div>
+        <div>
+          <div
+            className="ui icon button right floated basic"
+            onClick={() => setmovieDetails([])}
+          >
+            {" "}
+            <i className="window close outline icon large"></i>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const handleChange = (value) => {
     return setSearchTerm(value);
   };
-  const handleChange2 = (value) => {
-    return setSearchTerm2(value);
-  };
-  const debounceOnChange = useCallback(debounce(handleChange, 1000), []);
-  const debounceOnChange2 = useCallback(debounce(handleChange2, 1000), []);
 
+  const debounceOnChange = useCallback(debounce(handleChange, 1000), []);
 
   return (
     <div>
-      <h1>Movie List</h1>
+      <h1>Get Data</h1>
       <div className="ui form" style={{ display: "flex" }}>
         <div style={{ padding: "5px" }}>
-          <label>Search for movies </label>
+          <h3>Search for movies by a keyword in the title</h3>
+          <div>
+            <label>Search for movies </label>
+          </div>
           <input
             onChange={(e) => debounceOnChange(e.target.value)}
+            placeholder="bat"
             style={{ maxWidth: "40vw" }}
           />
         </div>
-        <div style={{ padding: "5px" }}>
-          <label>What do you want to be quizzed on? </label>
-          <input
-          placeholder="not yet!"
-            onChange={(e) => debounceOnChange2(e.target.value)}
-            style={{ maxWidth: "40vw" }}
-          />{" "}
-        </div>
       </div>
-      {renderList()}
+      <div style={{ display: "flex" }}>
+        {" "}
+        <div>{renderList()}</div>
+        <div>{renderDetails()}</div>
+      </div>
+
       <div style={{ margin: "1rem" }}>
         <p>Use this data?</p>
         <div
           className="ui basic button teal"
           onClick={() => {
-            history.push("/review");
+            history.push("/quiz");
           }}
         >
           Go to Quiz
@@ -116,17 +147,7 @@ const Data = () => {
 export default Data;
 
 /*
-
-
-//need to get info from input
-  //need to debounce api call
-  //use search term to get data
-  //get a 20 item list
-  //add buttons to choose list data to plug in quiz
-tt0072890
-
-
-
+ Possible Info to display on details
 {Title: "Dog Day Afternoon", Year: "1975", Rated: "R", Released: "25 Dec 1975", Runtime: "125 min", …}
 Actors: "Penelope Allen, Sully Boyar, John Cazale, Beulah Garrick"
 Awards: "Won 1 Oscar. Another 13 wins & 20 nominations."

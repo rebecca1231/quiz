@@ -5,8 +5,8 @@ import styled from "styled-components";
 import Footer from "./components/footer";
 import About from "./About";
 import Landing from "./Landing";
-import Review from "./Review";
-import Scores from "./Scores";
+import Quiz from "./Quiz";
+import Scores from "./Score";
 import Data from "./Data";
 
 const LayoutBase = styled.div`
@@ -28,24 +28,24 @@ const App = () => {
             <Link to="/">Home</Link>
           </div>
           <div className="item">
-            <Link to="/about">About</Link>
+            <Link to="/data">Get Your Data</Link>
           </div>
           <div className="item">
-            <Link to="/review">Review</Link>
+            <Link to="/quiz">Quiz</Link>
           </div>
-          <div className="item">
-            <Link to="/data">Data</Link>
-          </div>{" "}
           <div className="item">
             <Link to="/score">Score</Link>
+          </div>
+          <div className="item">
+            <Link to="/about">About</Link>
           </div>
         </div>
         <Switch>
           <LayoutBase>
             <Route path="/about" component={About} />
-            <Route path="/review" component={Review} />
+            <Route path="/quiz" component={Quiz} />
             <Route exact path="/" component={Landing} />
-            <Route path="/scores" component={Scores} />
+            <Route path="/score" component={Scores} />
             <Route path="/data" component={Data} />
           </LayoutBase>
         </Switch>
