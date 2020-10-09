@@ -1,3 +1,6 @@
+This project is live on Netlify!
+Check it out: [LiveSite](https://infallible-dubinsky-dfb626.netlify.app/)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
