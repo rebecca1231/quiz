@@ -26,7 +26,7 @@ const Data = () => {
     fetchData(searchTerm);
 
     const onMovieSelect = async (searchTerm2) => {
-      const response = await axios.get("http://www.omdbapi.com/", {
+      const response = await axios.get("https://www.omdbapi.com/", {
         params: {
           apikey: APIKEY,
           i: searchTerm2,
