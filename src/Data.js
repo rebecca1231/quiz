@@ -14,6 +14,7 @@ const Data = () => {
 
   useEffect(() => {
     const fetchData = async (searchTerm) => {
+      if(searchTerm === '') return
       const response = await axios.get(`https://rocky-beach-12396.herokuapp.com/movielist/${searchTerm}`);
       console.log(response.data)
       updateMovies(response.data);
@@ -21,6 +22,7 @@ const Data = () => {
     fetchData(searchTerm);
 
     const onMovieSelect = async (searchTerm2) => {
+      if(searchTerm2 === '') return
       const response = await axios.get(`https://rocky-beach-12396.herokuapp.com/moviedetail/${searchTerm2}`);
       console.log(response.data)
       setmovieDetails(response.data);
