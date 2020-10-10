@@ -1,9 +1,9 @@
+
 import axios from "axios";
 import React, { useEffect, useContext, useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { debounce } from "./utils/debounce";
 import { DataContext } from "./context/dataContext";
-const APIKEY = process.env.REACT_APP_APIKEY;
 
 const Data = () => {
   const history = useHistory();
@@ -14,25 +14,15 @@ const Data = () => {
 
   useEffect(() => {
     const fetchData = async (searchTerm) => {
-      const response = await axios.get("https://www.omdbapi.com/", {
-        params: {
-          apikey: APIKEY,
-          s: searchTerm,
-        },
-      });
-      if (response.data.Error) return [];
-      updateMovies(response.data.Search);
+      const response = await axios.get(`https://rocky-beach-12396.herokuapp.com/movielist/${searchTerm}`);
+      console.log(response.data)
+      updateMovies(response.data);
     };
     fetchData(searchTerm);
 
     const onMovieSelect = async (searchTerm2) => {
-      const response = await axios.get("https://www.omdbapi.com/", {
-        params: {
-          apikey: APIKEY,
-          i: searchTerm2,
-        },
-      });
-      if (response.data.Error) return [];
+      const response = await axios.get(`https://rocky-beach-12396.herokuapp.com/moviedetail/${searchTerm2}`);
+      console.log(response.data)
       setmovieDetails(response.data);
     };
     onMovieSelect(searchTerm2);
